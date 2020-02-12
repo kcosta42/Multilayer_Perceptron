@@ -5,6 +5,7 @@ import mlpy.losses as losses_module
 import mlpy.metrics as metrics_module
 import mlpy.optimizers as optimizers_module
 from mlpy.preprocessing import batch_iterator, shuffle_data, train_test_split
+from mlpy.visualizers import Progbar
 
 
 class Sequential(object):
@@ -108,52 +109,27 @@ class Sequential(object):
         else:
             x_val, y_val = validation_data
 
+        progbar = Progbar(epochs, x.shape[0], batch_size)
         for epoch in range(epochs):
-            print(f"Epoch {epoch + 1}/{epochs}")
-
             x, y = shuffle_data(x, y)
             losses = []
             metrics = []
             for output, target in batch_iterator(x, y, batch_size):
-
-                # Forward Propagation
-                for layer in self.layers:
-                    output = layer(output)
-                loss = M.mean(self.loss(target, output))
+                loss, metric = self.train_on_batch(output, target)
                 losses.append(loss)
-
-                # Backward Propagation / Compute Gradients
-                grads = M.transpose(self.loss.gradient(target, output))
-                self.layers[-1].gradients = [grads]
-                grads = self.layers[-1].gradients
-                params = self.layers[-1].weights
-                updates = []
-                for layer in self.layers[-2::-1]:
-                    grads = layer.backward(grads, params)
-                    params = layer.weights
-                    update = self.optimizer.get_updates(grads, params)
-                    updates.extend(update)
-
-                # Update weights based on Optimizers + Regularizer
-                for update in updates:  # TODO Bad: we need to add regularizer
-                    update()
-
-                # Metrics on train / validation
-                metric = self.compile_metrics(target, output)
                 metrics.append(metric)
+                if verbose >= 1:
+                    progbar.update(epoch, loss, metric)
 
             loss = M.mean(losses)
             metric = M.mean(metrics)
-            print(f"- loss: {loss:.5}", end=" ")
-            print(f"- metric: {metric:.5}", end=" ")
+            val_loss, val_metric = self.evaluate(x_val, y_val, batch_size)
             self.losses['training'].append(loss)
             self.metrics['training'].append(metric)
-
-            loss, metric = self.evaluate(x_val, y_val, batch_size)
-            print(f"- val_loss: {loss:.5}", end=" ")
-            print(f"- val_metric: {metric:.5}")
-            self.losses['validation'].append(loss)
-            self.metrics['validation'].append(metric)
+            self.losses['validation'].append(val_loss)
+            self.metrics['validation'].append(val_metric)
+            if verbose >= 1:
+                progbar.update(epoch, loss, metric, val_loss, val_metric)
 
     def evaluate(self, x=None, y=None, batch_size=None):
         """Returns the loss value & metrics values for the model in test mode.
@@ -174,16 +150,10 @@ class Sequential(object):
         losses = []
         metrics = []
         for output, target in batch_iterator(x, y, batch_size):
-
-            # Forward Propagation
-            for layer in self.layers:
-                output = layer(output)
-            loss = M.mean(self.loss(target, output))
+            loss, metric = self.test_on_batch(output, target)
             losses.append(loss)
-
-            # Metrics on train / validation
-            metric = self.compile_metrics(target, output)
             metrics.append(metric)
+
         return M.mean(losses), M.mean(metrics)
 
     def predict(self, x):
@@ -199,6 +169,55 @@ class Sequential(object):
         for layer in self.layers:
             output = layer(output)
         return output
+
+    def train_on_batch(self, x, y):
+        """Runs a single gradient update on a single batch of data.
+
+        Args:
+            x (tensor or array-like): Input data.
+            y (tensor or array-like): Target data.
+
+        Returns:
+            A scalar test loss or list of scalars with metrics.
+        """
+        output = x
+        for layer in self.layers:
+            output = layer(output)
+        loss = M.mean(self.loss(y, output))
+        metric = self.compile_metrics(y, output)
+
+        grads = M.transpose(self.loss.gradient(y, output))
+        self.layers[-1].gradients = [grads]
+        grads = self.layers[-1].gradients
+        params = self.layers[-1].weights
+        updates = []
+        for layer in self.layers[-2::-1]:
+            grads = layer.backward(grads, params)
+            params = layer.weights
+            update = self.optimizer.get_updates(grads, params)
+            updates.extend(update)
+
+        # Update weights based on Optimizers + Regularizer
+        for update in updates:  # TODO Bad: we need to add regularizer
+            update()
+        return loss, metric
+
+    def test_on_batch(self, x, y):
+        """Test the model on a single batch of samples.
+
+        Args:
+            x (tensor or array-like): Input data.
+            y (tensor or array-like): Target data.
+
+        Returns:
+            A scalar test loss or list of scalars with metrics.
+        """
+        output = x
+        for layer in self.layers:
+            output = layer(output)
+        loss = M.mean(self.loss(y, output))
+        metric = self.compile_metrics(y, output)
+        return loss, metric
 
     @property
     def layers(self):
