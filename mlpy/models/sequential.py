@@ -71,12 +71,15 @@ class Sequential(object):
         self.metrics = {'training': [], 'validation': []}
         # TODO We need to check if Dense followed by Activation
         # If no Activation found after Dense, we add LinearActivation layer
+        for layer in self.layers:
+            if hasattr(layer, 'optimize'):
+                layer.optimize(self.optimizer)
         return self
 
     def fit(self,
-            x,
+            X,
             y,
-            batch_size=None,
+            batch_size=32,
             epochs=1,
             verbose=1,
             validation_split=0.0,
@@ -85,7 +88,7 @@ class Sequential(object):
         """Trains the model for a fixed number of epochs.
 
         Args:
-            x (tensor or array-like): Input data.
+            X (tensor or array-like): Input data.
             y (tensor or array-like): Target data.
             batch_size (integer, optional): Number of sample in gradient update.
             epochs (integer, optional): Number of epochs to train the model.
@@ -99,22 +102,18 @@ class Sequential(object):
                 `validation_data` will override `validation_split`.
             shuffle (boolean): Whether to shuffle the data before each epoch.
         """
-        batch_size = self.inputs.shape[0]  # TODO Remove this later
-        if batch_size is None:
-            batch_size = 32
-
         if validation_data is None:
-            split = train_test_split(x, y, validation_split, shuffle=False)
-            x, x_val, y, y_val = split
+            split = train_test_split(X, y, validation_split, shuffle=False)
+            X, X_val, y, y_val = split
         else:
-            x_val, y_val = validation_data
+            X_val, y_val = validation_data
 
-        progbar = Progbar(epochs, x.shape[0], batch_size)
+        progbar = Progbar(epochs, X.shape[0], batch_size)
         for epoch in range(epochs):
-            x, y = shuffle_data(x, y)
+            X, y = shuffle_data(X, y)
             losses = []
             metrics = []
-            for output, target in batch_iterator(x, y, batch_size):
+            for output, target in batch_iterator(X, y, batch_size):
                 loss, metric = self.train_on_batch(output, target)
                 losses.append(loss)
                 metrics.append(metric)
@@ -123,7 +122,7 @@ class Sequential(object):
 
             loss = M.mean(losses)
             metric = M.mean(metrics)
-            val_loss, val_metric = self.evaluate(x_val, y_val, batch_size)
+            val_loss, val_metric = self.evaluate(X_val, y_val, batch_size)
             self.losses['training'].append(loss)
             self.metrics['training'].append(metric)
             self.losses['validation'].append(val_loss)
@@ -131,11 +130,11 @@ class Sequential(object):
             if verbose >= 1:
                 progbar.update(epoch, loss, metric, val_loss, val_metric)
 
-    def evaluate(self, x=None, y=None, batch_size=None):
+    def evaluate(self, X=None, y=None, batch_size=32):
         """Returns the loss value & metrics values for the model in test mode.
 
         Args:
-            x (tensor or array-like): Input data.
+            X (tensor or array-like): Input data.
             y (tensor or array-like): Target data.
             batch_size (integer, optional): Number of sample in gradient update.
             epochs (integer, optional): Number of epochs to train the model.
@@ -143,34 +142,30 @@ class Sequential(object):
         Returns:
             A scalar test loss or list of scalars with metrics.
         """
-        batch_size = self.inputs.shape[0]  # TODO Remove this later
-        if batch_size is None:
-            batch_size = 32
-
         losses = []
         metrics = []
-        for output, target in batch_iterator(x, y, batch_size):
+        for output, target in batch_iterator(X, y, batch_size):
             loss, metric = self.test_on_batch(output, target)
             losses.append(loss)
             metrics.append(metric)
 
         return M.mean(losses), M.mean(metrics)
 
-    def predict(self, x):
+    def predict(self, X):
         """Generates output predictions for the input samples.
 
         Args:
-            x (tensor or array-like): Input data.
+            X (tensor or array-like): Input data.
 
         Returns:
             A tensor corresponding to the prediction.
         """
-        output = x[:]
+        output = X[:]
         for layer in self.layers:
             output = layer(output)
         return output
 
-    def train_on_batch(self, x, y):
+    def train_on_batch(self, X, y):
         """Runs a single gradient update on a single batch of data.
 
         Args:
@@ -180,39 +175,29 @@ class Sequential(object):
         Returns:
             A scalar test loss or list of scalars with metrics.
         """
-        output = x
+        output = X
         for layer in self.layers:
             output = layer(output)
         loss = M.mean(self.loss(y, output))
         metric = self.compile_metrics(y, output)
 
-        grads = M.transpose(self.loss.gradient(y, output))
-        self.layers[-1].gradients = [grads]
-        grads = self.layers[-1].gradients
-        params = self.layers[-1].weights
-        updates = []
-        for layer in self.layers[-2::-1]:
-            grads = layer.backward(grads, params)
-            params = layer.weights
-            update = self.optimizer.get_updates(grads, params)
-            updates.extend(update)
+        grads = self.loss.gradient(y, output)
+        for layer in reversed(self.layers):
+            grads = layer.backward(grads)
 
-        # Update weights based on Optimizers + Regularizer
-        for update in updates:  # TODO Bad: we need to add regularizer
-            update()
         return loss, metric
 
-    def test_on_batch(self, x, y):
+    def test_on_batch(self, X, y):
         """Test the model on a single batch of samples.
 
         Args:
-            x (tensor or array-like): Input data.
+            X (tensor or array-like): Input data.
             y (tensor or array-like): Target data.
 
         Returns:
             A scalar test loss or list of scalars with metrics.
         """
-        output = x
+        output = X
         for layer in self.layers:
             output = layer(output)
         loss = M.mean(self.loss(y, output))

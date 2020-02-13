@@ -21,4 +21,4 @@ class Tanh(Activation):
 
     def gradient(self, x):
         """Gradient of the Tanh activation function."""
-        return 1 - self.forward(x)**2
+        return 1 - self.call(x)**2

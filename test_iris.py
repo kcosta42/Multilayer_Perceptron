@@ -10,7 +10,7 @@ np.seterr(all='raise')
 
 if __name__ == '__main__':
     model = Sequential([
-        Input(input_shape=(2,), batch_size=8),
+        Input(input_shape=(2,)),
         Dense(1, kernel_initializer='he_uniform', bias_initializer='ones'),
         Sigmoid(),
     ])
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     X_std[:, 1] = (X[:, 1] - X[:, 1].mean()) / X[:, 1].std()
 
     epochs = 100
-    model.fit(X_std, y, epochs=epochs, validation_split=0.3)
+    model.fit(X_std, y, batch_size=8, epochs=epochs, validation_split=0.3)
 
     plt.plot(range(1, epochs + 1), model.losses['training'], c='blue')
     plt.plot(range(1, epochs + 1), model.losses['validation'], c='red', ls='dashed')

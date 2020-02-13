@@ -77,7 +77,7 @@ if __name__ == '__main__':
         X_std[:, i] = (X[:, i] - X[:, i].mean()) / X[:, i].std()
 
     model = Sequential([
-        Input(input_shape=(X_std.shape[1],), batch_size=32),
+        Input(input_shape=(X_std.shape[1],)),
         Dense(32),
         ReLU(),
         Dense(2),

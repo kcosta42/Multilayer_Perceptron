@@ -22,7 +22,6 @@ class Layer(object):
         self.built = False
         self.weights = []
 
-        self.gradients = []
         self.outputs = None
         self.inputs = None
 
@@ -74,11 +73,11 @@ class Layer(object):
         """
         return inputs
 
-    def backward(self, *args):
+    def backward(self, loss):
         """Compute the gradient of the layer.
 
         Args:
-            *args: All the parameters needed to compute the gradient.
+            loss: The accumulated loss from the previous layer.
         """
         raise NotImplementedError
 

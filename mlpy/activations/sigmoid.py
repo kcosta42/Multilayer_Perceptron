@@ -20,4 +20,4 @@ class Sigmoid(Activation):
 
     def gradient(self, x):
         """Gradient of the Sigmoid activation function."""
-        return self.forward(x) * (1 - self.forward(x))
+        return self.call(x) * (1 - self.call(x))

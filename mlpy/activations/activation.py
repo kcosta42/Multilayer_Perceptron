@@ -1,4 +1,3 @@
-import mlpy.backend.math as M
 from mlpy.layers.layer import Layer
 
 
@@ -10,18 +9,8 @@ class Activation(Layer):
     def call(self, inputs):
         raise NotImplementedError
 
-    def backward(self, loss, params):
-        self.gradients = []
-
-        dZ = loss[2]
-        kernel = params[0]
-
-        activation_grad = M.dot(kernel, dZ)
-        Z_grad = activation_grad * M.transpose(self.gradient(self.inputs))
-
-        self.gradients.append(Z_grad)
-        self.gradients.append(activation_grad)
-        return self.gradients
+    def backward(self, loss):
+        return loss * self.gradient(self.inputs)
 
     def forward(self, x):
         """Forward activation function."""

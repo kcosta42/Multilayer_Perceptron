@@ -1,6 +1,7 @@
 import mlpy.backend.math as M
 import mlpy.initializers as initializers
 from mlpy.layers.layer import Layer
+import copy
 
 
 class Dense(Layer):
@@ -24,26 +25,26 @@ class Dense(Layer):
         self.use_bias = use_bias
         self.kernel_initializer = initializers.get(kernel_initializer)
         self.bias_initializer = initializers.get(bias_initializer)
+        self.kernel_optimizer = None
+        self.bias_optimizer = None
 
     def call(self, inputs):
         output = M.dot(inputs, self.kernel)
         if self.use_bias:
-            output = output + M.transpose(self.bias)
+            output = output + self.bias
         return output
 
-    def backward(self, loss, params):
-        self.gradients = []
+    def backward(self, loss):
+        _loss = M.dot(loss, M.transpose(self.kernel))
 
-        dZ = loss[0]
-        m = dZ.shape[0]
-        kernel_grad = (1. / m) * M.transpose(M.dot(dZ, self.inputs))
-        self.gradients.append(kernel_grad)
+        kernel_loss = M.dot(M.transpose(self.inputs), loss)
+        bias_loss = M.sum(loss, axis=0, keepdims=True)
 
-        bias_grad = (1. / m) * M.sum(dZ, axis=1, keepdims=True)
-        self.gradients.append(bias_grad)
+        self.kernel = self.kernel_optimizer.update(kernel_loss, self.kernel)
+        self.bias = self.bias_optimizer.update(bias_loss, self.bias)
 
-        self.gradients.append(dZ)
-        return self.gradients
+        # _loss = M.dot(loss, self.kernel)
+        return _loss
 
     def build(self, input_shape):
         input_dim = input_shape[-1]
@@ -53,10 +54,14 @@ class Dense(Layer):
 
         self.bias = None
         if self.use_bias:
-            self.bias = self.add_weight(shape=(self.units, 1),
+            self.bias = self.add_weight(shape=(self.units,),
                                         initializer=self.bias_initializer)
 
         output_shape = list(input_shape)
         output_shape[-1] = self.units
         self.shape = tuple(output_shape)
         self.built = True
+
+    def optimize(self, optimizer):
+        self.kernel_optimizer = copy.copy(optimizer)
+        self.bias_optimizer = copy.copy(optimizer)

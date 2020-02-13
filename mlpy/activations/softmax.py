@@ -21,5 +21,5 @@ class Softmax(Activation):
 
     def gradient(self, x):
         """Gradient of Softmax activation function."""
-        p = self.forward(x)
+        p = self.call(x)
         return p * (1 - p)

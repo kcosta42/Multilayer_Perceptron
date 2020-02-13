@@ -65,10 +65,10 @@ class SeLU(eLU):
         Returns:
             The scaled exponential unit activation: `scale * elu(x, alpha)`.
         """
-        elu = super(SeLU, self).forward(x)
+        elu = super(SeLU, self).call(x)
         return self.scale * elu
 
     def gradient(self, x):
         """Gradient of SeLU activation function."""
-        elu = super(SeLU, self).backward(x)
+        elu = super(SeLU, self).gradient(x)
         return self.scale * elu
