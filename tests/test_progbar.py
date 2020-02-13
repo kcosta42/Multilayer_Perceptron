@@ -1,5 +1,6 @@
-from mlpy.visualizers import Progbar
 import time
+
+from mlpy.visualizers import Progbar
 
 epochs = 25
 size = 500

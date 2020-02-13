@@ -4,11 +4,15 @@ import time
 class Progbar(object):
     """Progress bar class.
 
-    Args:
-        epochs (integer): Total number of epochs.
-        size (integer): Size of the dataset.
-        batch_size (integer): Batch size.
-        width (integer, optional): Width for the progress bar.
+    Arguments:
+        epochs: integer
+            Total number of epochs.
+        size: integer
+            Size of the dataset.
+        batch_size: integer
+            Batch size.
+        width: integer, Default: 30
+            Width for the progress bar.
     """
     def __init__(self, epochs, size, batch_size, width=30):
         self.start = time.time()
@@ -27,9 +31,10 @@ class Progbar(object):
     def update(self, epoch, *args):
         """Update Progress bar.
 
-        Args:
-            values (tuple): Tuple corresponding to
-                (epoch, batch_size, losses, metrics)
+        Arguments:
+            epoch: integer
+                Current epoch.
+            *args: loss, metrics, val_loss, val_metrics
         """
 
         self.step = time.time()

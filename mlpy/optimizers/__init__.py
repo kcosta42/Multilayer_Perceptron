@@ -9,16 +9,18 @@ OPTIMIZERS = {
 def get(identifier, **kwargs):
     """Optimizer instance getter.
 
-    Args:
-        identifier (string or Optimizer):
-            An optimizer instance name or instance.
+    Arguments:
+        identifier: string or Optimizer
+            An Optimizer instance or it's name.
+        kwargs: dict
+            Keywords arguments for instance initialisation.
 
     Raises:
-        ValueError: If identifier does not match with an existing optimizer
-            instance.
+        ValueError:
+            If identifier does not match with an existing Optimizer instance.
 
     Returns:
-        Optimizer instance.
+        An Optimizer instance.
     """
     if identifier is None:
         return None

@@ -9,8 +9,10 @@ class Linear(Activation):
 
     def call(self, x):
         """Linear (i.e. identity) activation function.
-        Args:
-            x (tensor): Input tensor.
+
+        Arguments:
+            x: array-like
+                Input tensor.
 
         Returns:
             Input tensor, unchanged.

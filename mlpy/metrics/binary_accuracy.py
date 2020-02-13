@@ -5,9 +5,9 @@ from mlpy.metrics.metric import MeanMetricWrapper
 class BinaryAccuracy(MeanMetricWrapper):
     """Calculates how often predictions matches labels.
 
-    Args:
-        threshold (float, optional): Threshold for deciding whether prediction
-            values are 1 or 0.
+    Arguments:
+        threshold: float, Default: 0.5
+            Threshold for deciding whether prediction values are 1 or 0.
     """
     def __init__(self, threshold=0.5):
         super(BinaryAccuracy, self).__init__(

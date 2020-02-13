@@ -4,16 +4,17 @@ import mlpy.backend.math as M
 class Layer(object):
     """Base Layer class for all layers.
 
-    Args:
-        dtype (string, optional): Data type for the weights in this layer.
-        input_shape (tuple or list, optional): A shape tuple, not including
-            the batch size.
+    Arguments:
+        dtype: string, Default: None
+            Data type for the weights in this layer.
+        input_shape: tuple or list, Default: None
+            A shape tuple, not including the batch size.
 
     Attributes:
-        shape (tuple): Output shape of the layer.
-        built (boolean): Whether the layer has been built or not.
-        weights (list): List of all the weights in this layer.
-
+        shape: tuple
+            Output shape of this layer.
+        size: integer
+            Number of parameters in this layers.
     """
     def __init__(self, dtype=None, input_shape=None):
         if dtype is None:
@@ -33,10 +34,13 @@ class Layer(object):
     def add_weight(self, shape=None, initializer=None, dtype=None):
         """Used to create and add weights to this layer.
 
-        Args:
-            shape (tuple, optional): Shape of the weigth.
-            initializer (object, optional): An Initializer instance (callable).
-            dtype (string, optional): Data type for the weight.
+        Arguments:
+            shape: tuple, Default: None
+                Shape of the weigth.
+            initializer: Initializer, Default: None
+                An Initializer instance (callable).
+            dtype: string, Default: None
+                Data type for the weight.
 
         Returns:
             The initialized weights.
@@ -47,7 +51,7 @@ class Layer(object):
         if dtype is None:
             dtype = self.dtype
 
-        weight = initializer(shape)
+        weight = initializer(shape, dtype=dtype)
         self.weights.append(weight)
         return weight
 
@@ -70,8 +74,9 @@ class Layer(object):
     def call(self, inputs):
         """This is were the layer's logic lives.
 
-        Args:
-            inputs (tensor): An input tensor.
+        Arguments:
+            inputs: array-like
+                An input tensor.
 
         Returns:
             A resulting tensor.
@@ -81,8 +86,9 @@ class Layer(object):
     def backward(self, loss):
         """Compute the gradient of the layer.
 
-        Args:
-            loss: The accumulated loss from the previous layer.
+        Arguments:
+            loss: scalar or array-like
+                The accumulated loss from the previous layer.
         """
         raise NotImplementedError
 
@@ -92,8 +98,9 @@ class Layer(object):
         It must be implemented in every layer that need to know the shape
         of the previous layer.
 
-        Args:
-            input_shape (tuple): The shape of the inputs
+        Arguments:
+            input_shape: tuple
+                The shape of the inputs.
         """
         self.built = True
         self.shape = tuple(input_shape)

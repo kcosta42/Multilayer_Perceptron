@@ -5,12 +5,14 @@ from mlpy.initializers.initializer import Initializer
 class RandomUniform(Initializer):
     """Initializer that generates tensors with a uniform distribution.
 
-    Args:
-        low (float, optional): Low range of random values to generate.
-        high (float, optional): Upper range of random values to generate.
-        seed (integer, optional): Used to seed the random generator.
+    Arguments:
+        low: float, Default: -0.05
+            Low range of random values to generate.
+        high: float, Default: 0.05
+            Upper range of random values to generate.
+        seed: integer, Default: None
+            Used to seed the random generator.
     """
-
     def __init__(self, low=-0.05, high=0.05, seed=None):
         self.low = low
         self.high = high

@@ -1,6 +1,6 @@
-from mlpy.metrics.metric import Metric
 from mlpy.metrics.accuracy import Accuracy
 from mlpy.metrics.binary_accuracy import BinaryAccuracy
+from mlpy.metrics.metric import Metric
 
 METRICS = {
     'accuracy': Accuracy,
@@ -11,16 +11,18 @@ METRICS = {
 def get(identifier, **kwargs):
     """Metric instance getter.
 
-    Args:
-        identifier (string or Metric):
-            An metric instance name or instance.
+    Arguments:
+        identifier: string or Metric
+            An Metric instance or it's name.
+        kwargs: dict
+            Keywords arguments for instance initialisation.
 
     Raises:
-        ValueError: If identifier does not match with an existing metric
-            instance.
+        ValueError:
+            If identifier does not match with an existing Metric instance.
 
     Returns:
-        Metric instance.
+        An Metric instance.
     """
     if identifier is None:
         return None

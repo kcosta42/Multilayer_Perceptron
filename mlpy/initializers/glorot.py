@@ -9,8 +9,9 @@ class GlorotNormal(VarianceScaling):
     where `fan_in` is the number of input units in the weight tensor
     and `fan_out` is the number of output units in the weight tensor.
 
-    Args:
-        seed (integer): Used to seed the random generator.
+    Arguments:
+        seed: integer, Default: None
+            Used to seed the random generator.
 
     Returns:
         A VarianceScaling initializer.
@@ -34,8 +35,9 @@ class GlorotUniform(VarianceScaling):
     where `fan_in` is the number of input units in the weight tensor
     and `fan_out` is the number of output units in the weight tensor.
 
-    Args:
-        seed (integer): Used to seed the random generator.
+    Arguments:
+        seed: integer, Default: None
+            Used to seed the random generator.
 
     Returns:
         A VarianceScaling initializer.

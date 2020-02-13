@@ -21,8 +21,9 @@ class Reduce(Metric):
     def __init__(self, reduction):
         """Creates a `Reduce` instance.
 
-        Args:
-            reduction: a metrics `Reduction` value.
+        Arguments:
+            reduction: string
+                a metrics `Reduction` value.
         """
         super(Reduce, self).__init__()
         self.reduction = reduction
@@ -30,8 +31,9 @@ class Reduce(Metric):
     def call(self, values):
         """Accumulates statistics for computing the reduction metric.
 
-        Args:
-            values: Per-example value.
+        Arguments:
+            values: array-like
+                Per-example value.
 
         Returns:
             A scalar corresponding to the metric value.
@@ -61,10 +63,12 @@ class MeanMetricWrapper(Mean):
     def __init__(self, fn, **kwargs):
         """Creates a `MeanMetricWrapper` instance.
 
-        Args:
-            fn: The metric function to wrap, with signature
+        Arguments:
+            fn: callable
+                The metric function to wrap, with signature
                 `fn(y_true, y_pred, **kwargs)`.
-            **kwargs: The keyword arguments that are passed on to `fn`.
+            **kwargs: dict
+                The keyword arguments that are passed on to `fn`.
         """
         super(MeanMetricWrapper, self).__init__()
         self._fn = fn
@@ -75,9 +79,11 @@ class MeanMetricWrapper(Mean):
 
         `y_true` and `y_pred` must have the same shape.
 
-        Args:
-            y_true (tensor): The ground truth values.
-            y_pred (tensor): The predicted values.
+        Arguments:
+            y_true: array-like
+                The ground truth values.
+            y_pred: array-like
+                The predicted values.
 
         Returns:
             A scalar corresponding to the metric value.

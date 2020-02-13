@@ -4,12 +4,14 @@ import mlpy.backend.math as M
 def to_categorical(y, num_classes=None, dtype='float32'):
     """Converts a class vector (integers) to binary class matrix.
 
-    Args:
-        y (1d-array): class vector to be converted into a matrix
+    Arguments:
+        y: 1d-array
+            Class vector to be converted into a matrix
             (integers from 0 to num_classes).
-        num_classes (integer, optional): total number of classes.
-        dtype (string, optional): The data type expected by the input
-            (`float32`, `float64`, `int32`...)
+        num_classes: integer, Default: None
+            Total number of classes.
+        dtype: string, Default: "float32"
+            The data type expected by the input
 
     Returns:
         A binary matrix representation of the input. The classes axis

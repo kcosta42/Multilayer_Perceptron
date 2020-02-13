@@ -1,9 +1,9 @@
 import mlpy.backend.math as M
-from mlpy.layers import Input
-from mlpy.layers.layer import Layer
 import mlpy.losses as losses_module
 import mlpy.metrics as metrics_module
 import mlpy.optimizers as optimizers_module
+from mlpy.layers import Input
+from mlpy.layers.layer import Layer
 from mlpy.preprocessing import batch_iterator, shuffle_data, train_test_split
 from mlpy.visualizers import Progbar
 
@@ -11,11 +11,9 @@ from mlpy.visualizers import Progbar
 class Sequential(object):
     """Sequential Model.
 
-    Args:
-        layers (list, optional): List of Layer objects.
-
-    Attributes:
-        losses (list): List of loss values computed during `fit`.
+    Arguments:
+        layers: list, Default: None
+            List of Layer objects.
     """
     def __init__(self, layers=None):
         self._layers = None
@@ -26,11 +24,15 @@ class Sequential(object):
     def add(self, layer):
         """Adds a layer instance on top of the layer stack.
 
-        Args:
-            layer (Layer): A Layer instance.
+        Arguments:
+            layer: Layer
+                A Layer instance.
 
         Raises:
-            TypeError: If the `layer` argument is not a Layer instance.
+            TypeError:
+                If the `layer` argument is not a Layer instance.
+            ValueError:
+                If the first `layer` doesn't specify an input shape.
         """
         if not isinstance(layer, Layer):
             raise TypeError("The added layer must be an instance of "
@@ -65,10 +67,13 @@ class Sequential(object):
     def compile(self, optimizer, loss, metrics=None):
         """Configures the model for training.
 
-        Args:
-            optimizer (string or Optimizer): Optimizer to use.
-            loss (string or Loss): Objective function.
-            metrics (list): List of metrics to be evaluated by the model during
+        Arguments:
+            optimizer: string or Optimizer
+                Optimizer to use.
+            loss: string or Loss
+                Objective function.
+            metrics: list, Default: None
+                List of metrics to be evaluated by the model during
                 training and testing. Example: `metrics=['accuracy']`.
         """
         self.optimizer = optimizers_module.get(optimizer)
@@ -93,20 +98,27 @@ class Sequential(object):
             shuffle=True):
         """Trains the model for a fixed number of epochs.
 
-        Args:
-            X (tensor or array-like): Input data.
-            y (tensor or array-like): Target data.
-            batch_size (integer, optional): Number of sample in gradient update.
-            epochs (integer, optional): Number of epochs to train the model.
-            verbose (integer, optional): Verbosity mode.
-                0 = silent, 1 = one line per epoch.
-            validation_split (float, optional): Fraction of the training data to
-                be used as validation data. The validation data is selected from
-                the last samples in the `x` and `y` data, before shuffling.
-            validation_data (tuple): `(x_val, y_val)`, Data on which to evaluate
-                the loss and any model metrics at the end of each epoch.
+        Arguments:
+            X: tensor or array-like
+                Input data.
+            y: tensor or array-like
+                Target data.
+            batch_size: integer, Default: 32
+                Number of sample in gradient update.
+            epochs: integer, Default: 1
+                Number of epochs to train the model.
+            verbose: integer, Default: 1
+                Verbosity mode. 0 = silent, 1 = one line per epoch.
+            validation_split: float, Default: 0
+                Fraction of the training data to be used as validation data.
+                The validation data is selected from the last samples in the
+                `x` and `y` data, before shuffling.
+            validation_data: tuple `(x_val, y_val)`, Default: None
+                Data on which to evaluate the loss and any model metrics at
+                the end of each epoch.
                 `validation_data` will override `validation_split`.
-            shuffle (boolean): Whether to shuffle the data before each epoch.
+            shuffle: boolean, Default: True
+                Whether to shuffle the data before each epoch.
         """
         if validation_data is None:
             split = train_test_split(X, y, validation_split, shuffle=False)
@@ -139,11 +151,13 @@ class Sequential(object):
     def evaluate(self, X=None, y=None, batch_size=32):
         """Returns the loss value & metrics values for the model in test mode.
 
-        Args:
-            X (tensor or array-like): Input data.
-            y (tensor or array-like): Target data.
-            batch_size (integer, optional): Number of sample in gradient update.
-            epochs (integer, optional): Number of epochs to train the model.
+        Arguments:
+            X: array-like, Default: None
+                Input data.
+            y: array-like, Default: None
+                Target data.
+            batch_size: integer, Default: 32
+                Number of sample in gradient update.
 
         Returns:
             A scalar test loss or list of scalars with metrics.
@@ -160,8 +174,9 @@ class Sequential(object):
     def predict(self, X):
         """Generates output predictions for the input samples.
 
-        Args:
-            X (tensor or array-like): Input data.
+        Arguments:
+            X: array-like
+                Input data.
 
         Returns:
             A tensor corresponding to the prediction.
@@ -174,9 +189,11 @@ class Sequential(object):
     def train_on_batch(self, X, y):
         """Runs a single gradient update on a single batch of data.
 
-        Args:
-            x (tensor or array-like): Input data.
-            y (tensor or array-like): Target data.
+        Arguments:
+            X: array-like
+                Input data.
+            y: array-like
+                Target data.
 
         Returns:
             A scalar test loss or list of scalars with metrics.
@@ -196,9 +213,11 @@ class Sequential(object):
     def test_on_batch(self, X, y):
         """Test the model on a single batch of samples.
 
-        Args:
-            X (tensor or array-like): Input data.
-            y (tensor or array-like): Target data.
+        Arguments:
+            X: array-like
+                Input data.
+            y: array-like
+                Target data.
 
         Returns:
             A scalar test loss or list of scalars with metrics.

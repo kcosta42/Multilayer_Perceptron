@@ -6,9 +6,11 @@ class Loss(object):
     def __call__(self, y_true, y_pred):
         """Invokes the `Loss` instance.
 
-        Args:
-            y_true (tensor): Ground truth values.
-            y_pred (tensor): The predicted values.
+        Arguments:
+            y_true: array-like
+                Ground truth values.
+            y_pred: array-like
+                The predicted values.
 
         Returns:
             Weighted loss float tensor or scalar.
@@ -19,17 +21,21 @@ class Loss(object):
     def call(self, y_true, y_pred):
         """Invokes the `Loss` instance.
 
-        Args:
-            y_true (tensor): Ground truth values.
-            y_pred (tensor): The predicted values.
+        Arguments:
+            y_true: array-like
+                Ground truth values.
+            y_pred: array-like
+                The predicted values.
         """
         raise NotImplementedError
 
     def gradient(self, y_true, y_pred):
         """Compute gradient for the `Loss` instance.
 
-        Args:
-            y_true (tensor): Ground truth values.
-            y_pred (tensor): The predicted values.
+        Arguments:
+            y_true: array-like
+                Ground truth values.
+            y_pred: array-like
+                The predicted values.
         """
         raise NotImplementedError

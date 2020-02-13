@@ -1,5 +1,5 @@
 from mlpy.activations.activation import Activation
-from mlpy.activations.elu import eLU, SeLU
+from mlpy.activations.elu import SeLU, eLU
 from mlpy.activations.linear import Linear
 from mlpy.activations.relu import ReLU
 from mlpy.activations.sigmoid import Sigmoid
@@ -7,8 +7,8 @@ from mlpy.activations.softmax import Softmax
 from mlpy.activations.tanh import Tanh
 
 ACTIVATIONS = {
-    'elu': eLU,
     'selu': SeLU,
+    'elu': eLU,
     'linear': Linear,
     'relu': ReLU,
     'sigmoid': Sigmoid,
@@ -19,12 +19,15 @@ ACTIVATIONS = {
 def get(identifier, **kwargs):
     """Activation instance getter.
 
-    Args:
-        identifier (string): An activation instance name.
+    Arguments:
+        identifier: string or Activation
+            An Activation instance or it's name.
+        kwargs: dict
+            Keywords arguments for instance initialisation.
 
     Raises:
-        ValueError: If identifier does not match with an existing activation
-            instance.
+        ValueError:
+            If identifier does not match with an existing Activation instance.
 
     Returns:
         An Activation instance.
@@ -37,7 +40,7 @@ def get(identifier, **kwargs):
 
     identifier = identifier.lower()
     if identifier not in ACTIVATIONS:
-        raise ValueError(f"Could not interpret activation instance "
+        raise ValueError(f"Could not interpret Activation instance "
                          f"identifier: {identifier}")
 
     activation = ACTIVATIONS[identifier](**kwargs)
@@ -47,8 +50,8 @@ def get(identifier, **kwargs):
 
 __all__ = [
     'get',
-    'eLU',
     'SeLU',
+    'eLU',
     'Linear',
     'ReLU',
     'Sigmoid',

@@ -10,8 +10,9 @@ class Softmax(Activation):
     def call(self, x):
         """Softmax activation function.
 
-        Args:
-            x: Input tensor.
+        Arguments:
+            x: array-like
+                Input tensor.
 
         Returns:
             Tensor, output of softmax transformation.

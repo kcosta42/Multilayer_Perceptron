@@ -7,8 +7,9 @@ class ReLU(Activation):
 
     It returns element-wise `max(alpha * x, x)`.
 
-    Args:
-        alpha (float, optional): Slope of the negative part. Defaults to zero.
+    Arguments:
+        alpha: float, Default: 0.0
+            Slope of the negative part.
     """
     def __init__(self, alpha=0.0):
         super(ReLU, self).__init__()
@@ -17,8 +18,9 @@ class ReLU(Activation):
     def call(self, x):
         """Rectified Linear Unit.
 
-        Args:
-            x (tensor): Input tensor.
+        Arguments:
+            x: array-like
+                Input tensor.
 
         Returns:
             A tensor.

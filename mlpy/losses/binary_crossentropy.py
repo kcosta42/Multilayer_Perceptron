@@ -9,8 +9,9 @@ class BinaryCrossentropy(Loss):
     (assumed to be 0 and 1). For each example, there should be a single
     floating-point value per prediction.
 
-    Args:
-        from_logits (boolean): Whether to interpret `y_pred` as a tensor of
+    Arguments:
+        from_logits: boolean, Default: False
+            Whether to interpret `y_pred` as a tensor of
             [logit](https://en.wikipedia.org/wiki/Logit) values.
             By default, we assume that `y_pred` contains probabilities
             (i.e., values in [0, 1]).

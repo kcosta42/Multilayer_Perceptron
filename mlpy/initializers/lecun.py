@@ -8,8 +8,9 @@ class LecunNormal(VarianceScaling):
     with `stddev = sqrt(1 / fan_in)`
     where `fan_in` is the number of input units in the weight tensor.
 
-    Args:
-        seed (integer): Used to seed the random generator.
+    Arguments:
+        seed: integer, Default: None
+            Used to seed the random generator.
 
     Returns:
         A VarianceScaling initializer.
@@ -32,8 +33,9 @@ class LecunUniform(VarianceScaling):
     where `limit` is `sqrt(3 / fan_in)`
     where `fan_in` is the number of input units in the weight tensor.
 
-    Args:
-        seed (integer): Used to seed the random generator.
+    Arguments:
+        seed: integer, Default: None
+            Used to seed the random generator.
 
     Returns:
         A VarianceScaling initializer.

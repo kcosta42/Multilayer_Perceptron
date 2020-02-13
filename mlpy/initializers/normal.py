@@ -5,13 +5,15 @@ from mlpy.initializers.initializer import Initializer
 class RandomNormal(Initializer):
     """Initializer that generates tensors with a normal distribution.
 
-    # Arguments
-        mean (float, optional): Mean of the random values to generate.
-        stddev (float, optional): Std dev of the random values to generate.
-        seed (integer): Used to seed the random generator.
+    Arguments:
+        mean: float, Default: 0.0
+            Mean of the random values to generate.
+        stddev: float, Default: 0.05
+            Std dev of the random values to generate.
+        seed: integer, Default: None
+            Used to seed the random generator.
     """
-
-    def __init__(self, mean=0., stddev=0.05, seed=None):
+    def __init__(self, mean=0.0, stddev=0.05, seed=None):
         self.mean = mean
         self.stddev = stddev
         self.seed = seed

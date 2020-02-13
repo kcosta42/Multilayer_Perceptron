@@ -4,8 +4,9 @@ from mlpy.layers.layer import Layer
 class Input(Layer):
     """Input Layer class, it represent the main entry for a model.
 
-    Args:
-        inputs (tensor, optional): Tensor to wrap into the `Input` layer.
+    Arguments:
+        inputs: array-like
+            Tensor to wrap into the `Input` layer.
 
     Raises:
         ValueError: If both inputs and input_shape are not defined.

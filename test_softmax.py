@@ -1,13 +1,14 @@
-from mlpy.models import Sequential
+import numpy as np
+import matplotlib.pyplot as plt
+
+from mlpy.activations import ReLU, Softmax
 from mlpy.layers import Dense, Input
-from mlpy.optimizers import SGD
 from mlpy.losses import BinaryCrossentropy
 from mlpy.metrics import BinaryAccuracy
-from mlpy.activations import ReLU, Softmax
+from mlpy.models import Sequential
+from mlpy.optimizers import SGD
 from mlpy.preprocessing import to_categorical
 
-import matplotlib.pyplot as plt
-import numpy as np
 np.seterr(all='raise')
 
 X = np.random.rand(500, 30)

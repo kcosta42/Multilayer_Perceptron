@@ -1,15 +1,11 @@
-from mlpy.models import Sequential
-from mlpy.layers import Input, Dense
-from mlpy.optimizers import SGD
-from mlpy.losses import BinaryCrossentropy
-from mlpy.metrics import BinaryAccuracy
-from mlpy.activations import Softmax, ReLU
-from mlpy.preprocessing import to_categorical, shuffle_data
-
-import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 
+from mlpy.layers import Dense
+from mlpy.models import Sequential
+from mlpy.optimizers import SGD
+from mlpy.preprocessing import shuffle_data, to_categorical
 
 if __name__ == '__main__':
     names = [
@@ -76,18 +72,14 @@ if __name__ == '__main__':
     for i in range(X.shape[1]):
         X_std[:, i] = (X[:, i] - X[:, i].mean()) / X[:, i].std()
 
+    shape = (X_std.shape[1],)
     model = Sequential([
-        Input(input_shape=(X_std.shape[1],)),
-        Dense(32),
-        ReLU(),
-        Dense(2),
-        Softmax(),
+        Dense(32, activation='relu', input_shape=shape),
+        Dense(2, activation='softmax'),
     ])
 
     optimizer = SGD(learning_rate=3e-4)
-    loss = BinaryCrossentropy()
-    metrics = BinaryAccuracy()
-    model.compile(optimizer, loss, metrics)
+    model.compile(optimizer, loss='bce', metrics='binary_accuracy')
 
     epochs = 100
     model.fit(X_std, y, epochs=epochs, validation_split=0.2)

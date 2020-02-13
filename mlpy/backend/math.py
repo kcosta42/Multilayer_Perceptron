@@ -12,8 +12,16 @@ def epsilon():
     return _EPSILON
 
 
-def equal(x1, x2):
-    return np.equal(x1, x2)
+def equal(x1, x2, **kwargs):
+    return np.equal(x1, x2, **kwargs)
+
+
+def sign(x, **kwargs):
+    return np.sign(x, **kwargs)
+
+
+def abs(x, **kwargs):
+    return np.abs(x, **kwargs)
 
 
 def min(a, b=None, **kwargs):
@@ -120,14 +128,3 @@ def arange(*args, **kwargs):
 
 def reshape(a, newshape, order='C'):
     return np.reshape(a, newshape, order=order)
-
-
-def update(x, new_x):  # TODO CHANGE THIS
-    def set_x():
-        x[:] = new_x
-    return set_x
-
-
-def update_add(x, increment):  # TODO CHANGE THIS
-    result = x + increment
-    return update(x, result)

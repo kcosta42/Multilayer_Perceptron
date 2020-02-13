@@ -10,8 +10,9 @@ class Sigmoid(Activation):
     def call(self, x):
         """Numerically stable Sigmoid activation function.
 
-        Args:
-            x (tensor): Input tensor.
+        Arguments:
+            x: array-like
+                Input tensor.
 
         Returns:
             The sigmoid activation: `1 / (1 + exp(-x))`.

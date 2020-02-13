@@ -16,15 +16,20 @@ class VarianceScaling(Initializer):
     samples are drawn from a uniform distribution
     within [-limit, limit], with `limit = sqrt(3 * scale / n)`.
 
-    Args:
-        scale (float, optional): Scaling factor.
-        mode (string, optional): One of "fan_in", "fan_out", "fan_avg".
-        distribution (string, optional): One of "normal", "uniform".
+    Arguments:
+        scale: float, Default: 1.0
+            Scaling factor.
+        mode: string, Default: "fan_in"
+            One of "fan_in", "fan_out", "fan_avg".
+        distribution: string, Default: "normal"
+            One of "normal", "uniform".
             Random distribution to use.
-        seed (integer, optional): Used to seed the random generator.
+        seed: integer, Default: None
+            Used to seed the random generator.
 
     Raises:
-        ValueError: In case of an invalid value for the "scale", mode" or
+        ValueError:
+            In case of an invalid value for the "scale", mode" or
             "distribution" arguments.
 
     References:
@@ -54,7 +59,7 @@ class VarianceScaling(Initializer):
         self.distribution = distribution
         self.seed = seed
 
-    def __call__(self, shape):
+    def __call__(self, shape, dtype=None):
         fan_in, fan_out = shape[0], shape[1]
         scale = self.scale
         if self.mode == 'fan_in':

@@ -4,10 +4,13 @@ import mlpy.backend.math as M
 def shuffle_data(X, y, seed=None):
     """Random shuffle of the samples in X and y.
 
-    Args:
-        X (tensor): Input data.
-        y (tensor): Target data.
-        seed (integer): Random state.
+    Arguments:
+        X: array-like
+            Input data.
+        y: array-like
+            Target data.
+        seed: integer, Default: None
+            Random state.
 
     Returns:
         A tuple (X, y) permuted.
@@ -19,10 +22,13 @@ def shuffle_data(X, y, seed=None):
 def batch_iterator(X, y=None, batch_size=32):
     """Simple batch generator.
 
-    Args:
-        X (tensor): Input data.
-        y (tensor, optional): Target data.
-        batch_size (integer, optional): Batch size. Default to 32.
+    Arguments:
+        X: array-like
+            Input data.
+        y: array-like, Default: None
+            Target data.
+        batch_size: integer, Default: 32
+            Batch size.
 
     Yields:
         If `y` in provided then a tuple (`X`, `y`) is returned,
@@ -41,12 +47,17 @@ def batch_iterator(X, y=None, batch_size=32):
 def train_test_split(X, y, split=0.3, shuffle=True, seed=None):
     """Split the data into train and test sets.
 
-    Args:
-        X (tensor): Input data.
-        y (tensor): Target data.
-        split (float, optional): Ratio for splitting (between 0.0 and 1.0).
-        shuffle (boolean, optional): Shuffle before splitting.
-        seed (integer): Random state.
+    Arguments:
+        X: array-like
+            Input data.
+        y: array-like
+            Target data.
+        split: float, Default: 0.3
+            Ratio for splitting (between 0.0 and 1.0).
+        shuffle: boolean, Default: True
+            Shuffle before splitting.
+        seed: integer, Default: None
+            Random state.
 
     Returns:
         A tuple (X_train, X_test, y_train, y_test) corresponding to the split.

@@ -1,11 +1,8 @@
 from mlpy.initializers.constant import Constant
-from mlpy.initializers.glorot import GlorotNormal
-from mlpy.initializers.glorot import GlorotUniform
-from mlpy.initializers.he import HeNormal
-from mlpy.initializers.he import HeUniform
+from mlpy.initializers.glorot import GlorotNormal, GlorotUniform
+from mlpy.initializers.he import HeNormal, HeUniform
 from mlpy.initializers.initializer import Initializer
-from mlpy.initializers.lecun import LecunNormal
-from mlpy.initializers.lecun import LecunUniform
+from mlpy.initializers.lecun import LecunNormal, LecunUniform
 from mlpy.initializers.normal import RandomNormal
 from mlpy.initializers.ones import Ones
 from mlpy.initializers.uniform import RandomUniform
@@ -31,13 +28,15 @@ INITIALIZERS = {
 def get(identifier, **kwargs):
     """Initializer instance getter.
 
-    Args:
-        identifier (string or Initializer):
-            An initializer instance name or instance.
+    Arguments:
+        identifier: string or Initializer
+            An Initializer instance or it's name.
+        kwargs: dict
+            Keywords arguments for instance initialisation.
 
     Raises:
-        ValueError: If identifier does not match with an existing initializer
-            instance.
+        ValueError:
+            If identifier does not match with an existing Initializer instance.
 
     Returns:
         Initializer instance.
@@ -50,7 +49,7 @@ def get(identifier, **kwargs):
 
     identifier = identifier.lower()
     if identifier not in INITIALIZERS:
-        raise ValueError(f"Could not interpret initializer instance "
+        raise ValueError(f"Could not interpret Initializer instance "
                             f"identifier: {identifier}")
 
     initializer = INITIALIZERS[identifier](**kwargs)

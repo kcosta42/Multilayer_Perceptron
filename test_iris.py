@@ -1,9 +1,12 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
 from mlpy.layers import Dense
 from mlpy.models import Sequential
 from mlpy.optimizers import SGD
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+
+
 np.seterr(all='raise')
 
 
@@ -14,7 +17,7 @@ if __name__ == '__main__':
 
     model.summary()
 
-    optimizer = SGD(learning_rate=0.001)
+    optimizer = SGD(learning_rate=1e-3)
     model.compile(optimizer, loss='bce', metrics='binary_accuracy')
 
     df = pd.read_csv('./data/iris.csv', header=None)
@@ -44,5 +47,5 @@ if __name__ == '__main__':
     plt.ylabel('Accuracy')
     plt.show()
 
-    prediction = model.predict(X_std[-1])
+    prediction = model.predict(X_std[-1].reshape((1, -1)))
     print(f"Prediction: {prediction} -- Original: {y[-1]}")

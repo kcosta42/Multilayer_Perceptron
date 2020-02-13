@@ -5,8 +5,9 @@ from mlpy.activations.activation import Activation
 class eLU(Activation):
     """Exponential linear unit.
 
-    Args:
-        alpha (float, optional): A scalar, slope of negative section.
+    Arguments:
+        alpha: float, Default: 1.0
+            A scalar, slope of negative section.
 
     References:
         - [Fast and Accurate Deep Network Learning by Exponential
@@ -19,8 +20,9 @@ class eLU(Activation):
     def forward(self, x):
         """Exponential linear unit.
 
-        Args:
-            x (tensor): Input tensor.
+        Arguments:
+            x: array-like
+                Input tensor.
 
         Returns:
             The exponential linear activation:
@@ -59,8 +61,9 @@ class SeLU(eLU):
     def call(self, x):
         """Scaled Exponential Linear Unit (SELU).
 
-        Args:
-            x: A tensor or variable to compute the activation function for.
+        Arguments:
+            x: array-like
+                A tensor or variable to compute the activation function for.
 
         Returns:
             The scaled exponential unit activation: `scale * elu(x, alpha)`.

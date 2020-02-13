@@ -10,8 +10,9 @@ class Tanh(Activation):
     def call(self, x):
         """Hyperbolic tangent activation function.
 
-        Args:
-            x (tensor): Input tensor.
+        Arguments:
+            x: array-like
+                Input tensor.
 
         Returns:
             The hyperbolic activation:

@@ -13,15 +13,18 @@ LOSSES = {
 def get(identifier, **kwargs):
     """Loss instance getter.
 
-    Args:
-        identifier (string or Loss):
-            An loss instance name or instance.
+    Arguments:
+        identifier: string or Loss
+            An Loss instance or it's name.
+        kwargs: dict
+            Keywords arguments for instance initialisation.
 
     Raises:
-        ValueError: If identifier does not match with an existing loss instance.
+        ValueError:
+            If identifier does not match with an existing Loss instance.
 
     Returns:
-        Loss instance.
+        An Loss instance.
     """
     if identifier is None:
         return None
@@ -31,7 +34,7 @@ def get(identifier, **kwargs):
 
     identifier = identifier.lower()
     if identifier not in LOSSES:
-        raise ValueError(f"Could not interpret loss instance "
+        raise ValueError(f"Could not interpret Loss instance "
                          f"identifier: {identifier}")
 
     loss = LOSSES[identifier](**kwargs)

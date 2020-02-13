@@ -5,8 +5,9 @@ from mlpy.initializers.initializer import Initializer
 class Constant(Initializer):
     """Initializer that generates tensors initialized to a constant value.
 
-    Args:
-        value (float): The value of the generator tensors.
+    Arguments:
+        value: float, Default: 0
+            The value of the generator tensors.
     """
     def __init__(self, value=0):
         self.value = value
