@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='mlpy',
+    name='libft',
     version='0.1',
     description="Minimalist Library for Machine Learning Project",
     url='https://github.com/kcosta42/Multilayer_Perceptron',

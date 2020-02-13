@@ -1,16 +1,16 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from mlpy.layers import Dense
-from mlpy.models import Sequential
-from mlpy.optimizers import SGD
-from mlpy.preprocessing import shuffle_data, to_categorical
+import libft.backend.math as M
+from libft.layers import Dense
+from libft.models import Sequential
+from libft.optimizers import SGD
+from libft.preprocessing import shuffle_data, to_categorical
 
 if __name__ == '__main__':
     names = [
-        'Id',
-        'Diagnosis',
+        'id',
+        'diagnosis',
         'mean radius',
         'mean texture',
         'mean perimeter',
@@ -43,10 +43,10 @@ if __name__ == '__main__':
         'worst fractal dimension',
     ]
     df = pd.read_csv('./data/data.csv', header=None, names=names)
-    df['Diagnosis'] = (df['Diagnosis'] == 'M').astype(int)
+    df['diagnosis'] = (df['diagnosis'] == 'M').astype(int)
 
     keeps = [
-        'Diagnosis',
+        'diagnosis',
         'mean radius',
         'mean texture',
         'mean concavity',
@@ -63,12 +63,14 @@ if __name__ == '__main__':
     ]
 
     df = df[keeps]
+    seed = M.randint(0, 1e6)
+    M.random_seed(seed)
 
     X = df.values[:, 1:]
     y = to_categorical(df.values[:, 0])
     X, y = shuffle_data(X, y)
 
-    X_std = np.copy(X)
+    X_std = X[:]
     for i in range(X.shape[1]):
         X_std[:, i] = (X[:, i] - X[:, i].mean()) / X[:, i].std()
 
@@ -95,3 +97,5 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.show()
+
+    print(seed)
