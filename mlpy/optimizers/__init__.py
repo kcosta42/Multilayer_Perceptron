@@ -1,8 +1,10 @@
 from mlpy.optimizers.optimizer import Optimizer
 from mlpy.optimizers.sgd import SGD
+from mlpy.optimizers.rmsprop import RMSprop
 
 OPTIMIZERS = {
-    'sgd': SGD
+    'rmsprop': RMSprop,
+    'sgd': SGD,
 }
 
 
@@ -39,5 +41,6 @@ def get(identifier, **kwargs):
 
 __all__ = [
     'get',
+    'RMSprop',
     'SGD',
 ]

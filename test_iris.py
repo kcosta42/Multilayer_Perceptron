@@ -4,7 +4,7 @@ import pandas as pd
 
 from mlpy.layers import Dense
 from mlpy.models import Sequential
-from mlpy.optimizers import SGD
+from mlpy.optimizers import RMSprop
 
 
 np.seterr(all='raise')
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     model.summary()
 
-    optimizer = SGD(learning_rate=1e-3)
+    optimizer = RMSprop(learning_rate=1e-3)
     model.compile(optimizer, loss='bce', metrics='binary_accuracy')
 
     df = pd.read_csv('./data/iris.csv', header=None)
