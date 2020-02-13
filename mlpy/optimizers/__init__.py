@@ -20,6 +20,9 @@ def get(identifier, **kwargs):
     Returns:
         Optimizer instance.
     """
+    if identifier is None:
+        return None
+
     if isinstance(identifier, Optimizer):
         return identifier
 

@@ -6,6 +6,8 @@ class Layer(object):
 
     Args:
         dtype (string, optional): Data type for the weights in this layer.
+        input_shape (tuple or list, optional): A shape tuple, not including
+            the batch size.
 
     Attributes:
         shape (tuple): Output shape of the layer.
@@ -13,12 +15,15 @@ class Layer(object):
         weights (list): List of all the weights in this layer.
 
     """
-    def __init__(self, dtype=None):
+    def __init__(self, dtype=None, input_shape=None):
         if dtype is None:
             dtype = M.floatx()
         self.dtype = dtype
 
         self.shape = None
+        if input_shape is not None:
+            self.shape = (None,) + tuple(input_shape)
+
         self.built = False
         self.weights = []
 

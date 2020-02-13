@@ -29,6 +29,9 @@ def get(identifier, **kwargs):
     Returns:
         An Activation instance.
     """
+    if identifier is None:
+        return None
+
     if isinstance(identifier, Activation):
         return identifier
 
@@ -37,7 +40,7 @@ def get(identifier, **kwargs):
         raise ValueError(f"Could not interpret activation instance "
                          f"identifier: {identifier}")
 
-    activation = ACTIVATIONS[identifier]
+    activation = ACTIVATIONS[identifier](**kwargs)
 
     return activation
 

@@ -1,5 +1,4 @@
-from mlpy.layers import Dense, Input
-from mlpy.activations import Sigmoid
+from mlpy.layers import Dense
 from mlpy.models import Sequential
 from mlpy.optimizers import SGD
 import pandas as pd
@@ -10,9 +9,7 @@ np.seterr(all='raise')
 
 if __name__ == '__main__':
     model = Sequential([
-        Input(input_shape=(2,)),
-        Dense(1, kernel_initializer='he_uniform', bias_initializer='ones'),
-        Sigmoid(),
+        Dense(1, activation='sigmoid', input_shape=(2, )),
     ])
 
     model.summary()

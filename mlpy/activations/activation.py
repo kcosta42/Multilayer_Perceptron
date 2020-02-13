@@ -3,8 +3,8 @@ from mlpy.layers.layer import Layer
 
 class Activation(Layer):
     """Activation layer, which applies an activation function to an output."""
-    def __init__(self):
-        super(Activation, self).__init__()
+    def __init__(self, **kwargs):
+        super(Activation, self).__init__(**kwargs)
 
     def call(self, inputs):
         raise NotImplementedError

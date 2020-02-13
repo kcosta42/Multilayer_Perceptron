@@ -6,21 +6,16 @@ class Input(Layer):
 
     Args:
         inputs (tensor, optional): Tensor to wrap into the `Input` layer.
-        input_shape (tuple or list, optional): A shape tuple, not including
-            the batch size.
 
     Raises:
         ValueError: If both inputs and input_shape are not defined.
     """
-    def __init__(self, inputs=None, input_shape=None):
-        super(Input, self).__init__()
-        if inputs is None and input_shape is None:
+    def __init__(self, inputs=None, **kwargs):
+        super(Input, self).__init__(**kwargs)
+        if inputs is None and self.shape is None:
             raise ValueError("`inputs` or `input_shape` must be defined.")
 
-        if inputs is None:
-            self.shape = (None,) + tuple(input_shape)
-            self.outputs = None
-        else:
+        if inputs is not None:
             self.shape = inputs.shape
             self.outputs = inputs
 

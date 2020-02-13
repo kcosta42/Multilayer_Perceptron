@@ -22,6 +22,9 @@ def get(identifier, **kwargs):
     Returns:
         Metric instance.
     """
+    if identifier is None:
+        return None
+
     if isinstance(identifier, Metric):
         return identifier
 

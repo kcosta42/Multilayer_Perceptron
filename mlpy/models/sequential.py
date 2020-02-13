@@ -39,14 +39,22 @@ class Sequential(object):
 
         if not self._layers:
             if not isinstance(layer, Input):
-                raise ValueError("Currently we need the first layer in "
-                                 "a Sequential model to be an Input layer.")
+                if layer.shape is None:
+                    raise ValueError("The first layer in a Sequential "
+                                     "model must specify an `input_shape`.")
+
             self._layers = []
             self.inputs = layer
             self.outputs = layer
 
         self._layers.append(layer)
         self.build()
+        if hasattr(layer, 'activation'):
+            if layer.activation is not None:
+                activation = layer.activation
+                self._layers.append(activation)
+                self.build()
+
         return self
 
     def build(self):
@@ -69,8 +77,6 @@ class Sequential(object):
 
         self.losses = {'training': [], 'validation': []}
         self.metrics = {'training': [], 'validation': []}
-        # TODO We need to check if Dense followed by Activation
-        # If no Activation found after Dense, we add LinearActivation layer
         for layer in self.layers:
             if hasattr(layer, 'optimize'):
                 layer.optimize(self.optimizer)

@@ -2,14 +2,16 @@ import mlpy.backend.math as M
 import mlpy.initializers as initializers
 from mlpy.layers.layer import Layer
 import copy
+import mlpy.activations as activations
 
 
 class Dense(Layer):
     """Dense Layer, a regular densely-connected NN layer.
 
     Args:
-        units (int): Dimensionality of the output space.
-        use_bias (boolean, optionnal): Whether the layer uses a bias vector.
+        units (integer): Dimensionality of the output space.
+        activation (string or Activation, optional): Activation function to use.
+        use_bias (boolean, optional): Whether the layer uses a bias vector.
         kernel_initializer (string or Initializer, optional):
             Initializer for kernel.
         bias_initializer (string or Initializer, optional):
@@ -17,11 +19,14 @@ class Dense(Layer):
     """
     def __init__(self,
                  units,
+                 activation=None,
                  use_bias=True,
                  kernel_initializer='glorot_uniform',
-                 bias_initializer='zeros'):
-        super(Dense, self).__init__()
+                 bias_initializer='zeros',
+                 **kwargs):
+        super(Dense, self).__init__(**kwargs)
         self.units = units
+        self.activation = activations.get(activation)
         self.use_bias = use_bias
         self.kernel_initializer = initializers.get(kernel_initializer)
         self.bias_initializer = initializers.get(bias_initializer)

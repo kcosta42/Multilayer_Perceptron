@@ -42,6 +42,9 @@ def get(identifier, **kwargs):
     Returns:
         Initializer instance.
     """
+    if identifier is None:
+        return None
+
     if isinstance(identifier, Initializer):
         return identifier
 

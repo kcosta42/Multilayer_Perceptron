@@ -23,6 +23,9 @@ def get(identifier, **kwargs):
     Returns:
         Loss instance.
     """
+    if identifier is None:
+        return None
+
     if isinstance(identifier, Loss):
         return identifier
 
