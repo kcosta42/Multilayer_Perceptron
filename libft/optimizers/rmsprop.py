@@ -6,7 +6,7 @@ class RMSprop(Optimizer):
     """RMSProp optimizer.
 
     Arguments:
-        learning_rate: float, Default: 0.001
+        learning_rate: float, Default: 1e-3
             Learning rate.
         rho: float, Default: 0.9
         decay: float, Default: 0.0
@@ -17,7 +17,7 @@ class RMSprop(Optimizer):
            magnitude](http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf) # noqa
     """
 
-    def __init__(self, learning_rate=0.001, rho=0.9, decay=0.0, epsilon=1e-7):
+    def __init__(self, learning_rate=1e-3, rho=0.9, decay=0.0, epsilon=1e-7):
         super(RMSprop, self).__init__()
         self.initial_decay = decay
         self.iterations = 0

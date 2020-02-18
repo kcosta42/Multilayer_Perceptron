@@ -148,7 +148,7 @@ class Sequential(object):
             if verbose >= 1:
                 progbar.update(epoch, loss, metric, val_loss, val_metric)
 
-    def evaluate(self, X=None, y=None, batch_size=32):
+    def evaluate(self, X=None, y=None, batch_size=32, verbose=0):
         """Returns the loss value & metrics values for the model in test mode.
 
         Arguments:
@@ -158,6 +158,8 @@ class Sequential(object):
                 Target data.
             batch_size: integer, Default: 32
                 Number of sample in gradient update.
+            verbose: integer, Default: 0
+                Verbosity mode. 0 = silent, 1 = one line per batch.
 
         Returns:
             A scalar test loss or list of scalars with metrics.
@@ -165,9 +167,11 @@ class Sequential(object):
         losses = []
         metrics = []
         for output, target in batch_iterator(X, y, batch_size):
-            loss, metric = self.test_on_batch(output, target)
+            loss, metric, output = self.test_on_batch(output, target)
             losses.append(loss)
             metrics.append(metric)
+            if verbose >= 1:
+                print(f"-> {target} - raw{M.round(output, decimals=3)}")
 
         return M.mean(losses), M.mean(metrics)
 
@@ -227,7 +231,7 @@ class Sequential(object):
             output = layer(output)
         loss = M.mean(self.loss(y, output))
         metric = self.compile_metrics(y, output)
-        return loss, metric
+        return loss, metric, output
 
     @property
     def layers(self):

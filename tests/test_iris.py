@@ -17,7 +17,7 @@ model.summary()
 optimizer = RMSprop(learning_rate=1e-3)
 model.compile(optimizer, loss='bce', metrics='binary_accuracy')
 
-df = pd.read_csv('./data/iris.csv', header=None)
+df = pd.read_csv('./tests/data/iris.csv', header=None)
 y = df.iloc[0:100, 4].values.reshape((-1, 1))
 y = np.where(y == 'Iris-setosa', 0, 1)
 X = df.iloc[0:100, [0, 2]].values

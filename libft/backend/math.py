@@ -40,12 +40,16 @@ def sum(*args, **kwargs):
     return np.sum(*args, **kwargs)
 
 
-def round(a, decimals=0, out=None):
-    return np.round(a, decimals=decimals, out=out)
+def round(a, **kwargs):
+    return np.round(a, **kwargs)
 
 
-def mean(a, axis=None):
-    return np.mean(a, axis=axis)
+def mean(a, **kwargs):
+    return np.mean(a, **kwargs)
+
+
+def std(a, **kwargs):
+    return np.std(a, **kwargs)
 
 
 def square(x):
@@ -116,25 +120,29 @@ def permutation(x, seed=None):
     return np.random.permutation(x)
 
 
-def array(a, dtype=None, copy=True):
-    return np.array(a, dtype=dtype, copy=copy)
+def array(a, **kwargs):
+    return np.array(a, **kwargs)
 
 
-def constant(value, shape=None, dtype=None):
-    return np.full(shape, value, dtype=dtype)
+def constant(value, shape, **kwargs):
+    return np.full(shape, value, **kwargs)
 
 
-def ones(shape, dtype=None):
-    return constant(1, shape, dtype=dtype)
+def ones(shape, **kwargs):
+    return np.ones(shape, **kwargs)
 
 
-def zeros(shape, dtype=None):
-    return constant(0, shape, dtype=dtype)
+def zeros(shape, **kwargs):
+    return np.zeros(shape, **kwargs)
 
 
 def arange(*args, **kwargs):
     return np.arange(*args, **kwargs)
 
 
-def reshape(a, newshape, order='C'):
-    return np.reshape(a, newshape, order=order)
+def reshape(a, newshape, **kwargs):
+    return np.reshape(a, newshape, **kwargs)
+
+
+def append(arr, values, axis=None):
+    return np.append(arr, values, axis=axis)
