@@ -2,7 +2,7 @@ import argparse
 import pandas as pd
 
 import libft.backend.math as M
-from libft.activations import ReLU, Softmax
+from libft.activations import ReLU, Softmax, TanH
 from libft.layers import Dense, Input
 from libft.models import Sequential, load_model, save_model
 from libft.optimizers import RMSprop
@@ -31,16 +31,20 @@ def training(X, y, path, verbose=False):
     shape = (X.shape[1],)
     model = Sequential([
         Input(input_shape=shape),
-        Dense(16, kernel_initializer='glorot_normal', bias_initializer='ones'),
+        Dense(16, kernel_initializer='glorot_normal'),
+        ReLU(alpha=0.1),
+        Dense(32, bias_initializer='ones'),
+        TanH(),
+        Dense(16, kernel_initializer='glorot_normal'),
         ReLU(alpha=0.01),
-        Dense(2, kernel_initializer='he_normal'),
+        Dense(2),
         Softmax(),
     ])
 
-    optimizer = RMSprop(learning_rate=1e-4)
+    optimizer = RMSprop(learning_rate=3e-5)
     model.compile(optimizer, loss='bce', metrics='binary_accuracy')
 
-    model.fit(X, y, epochs=100, validation_split=0.2, batch_size=16)
+    model.fit(X, y, epochs=150, validation_split=0.2, batch_size=16)
     save_model(model, scaler=scaler, path=path)
     if verbose:
         plot_model(model)
@@ -62,7 +66,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    seed = args.seed if args.seed else M.randint(0, 1e6)  # 438260
+    seed = args.seed if args.seed else M.randint(0, 1e6)  # 838375
     M.random_seed(seed)
 
     df = pd.read_csv(args.dataset, header=None)
