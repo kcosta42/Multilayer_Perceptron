@@ -228,7 +228,10 @@ class Sequential(object):
         """
         output = X
         for layer in self.layers:
+            trainable = layer.trainable
+            layer.trainable = False
             output = layer(output)
+            layer.trainable = trainable
         loss = M.mean(self.loss(y, output))
         metric = self.compile_metrics(y, output)
         return loss, metric, output
